@@ -10,6 +10,7 @@ import {
 import type { Route } from "./+types/root";
 import "@/ui/global/styles/global.css";
 import { Toaster } from "@/ui/shadcn/components/sonner"
+import DashboardLayout from "@/ui/global/widgets/layouts/dashboard-layout"
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -34,8 +35,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
-        <ScrollRestoration />
+        <DashboardLayout>
+          {children}
+        </DashboardLayout>
+        <ScrollRestoration /> 
         <Scripts />
       </body>
     </html>
