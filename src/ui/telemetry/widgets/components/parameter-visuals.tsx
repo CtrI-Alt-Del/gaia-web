@@ -16,7 +16,6 @@ type Visual = {
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 };
 
-// Paleta fixa (sem string dinâmica) para Tailwind pegar no build
 export const palette: Record<ColorName, { iconBg: string; iconRing: string }> = {
   stone: { iconBg: "bg-stone-100 text-stone-800", iconRing: "ring-stone-200" },
   blue: { iconBg: "bg-blue-100 text-blue-800", iconRing: "ring-blue-200" },
@@ -42,7 +41,6 @@ export function getParameterVisuals(name: string): Visual {
   return { color: "stone", Icon: Circle };
 }
 
-// Textos de apoio para a coluna DESCRIPTION (inferidos por nome)
 export function getParameterTexts(name: string): { description: string; category: string } {
   const k = name.toLowerCase();
 

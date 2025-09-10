@@ -105,7 +105,6 @@ export function ParametersListPage({
 
               return (
                 <tr key={p.id} className="border-t border-stone-200">
-                  {/* NAME */}
                   <td className="px-4 py-3 align-top">
                     <div className="flex items-center gap-3">
                       <span className={`inline-flex size-9 items-center justify-center rounded-xl ${styles.iconBg} ring-1 ${styles.iconRing}`}>
@@ -118,29 +117,23 @@ export function ParametersListPage({
                     </div>
                   </td>
 
-                  {/* DESCRIPTION */}
                   <td className="px-4 py-3 align-top">
                     <div className="text-stone-800">{description}</div>
                     <div className="text-xs text-stone-500">{category}</div>
                   </td>
 
-                  {/* UNIT */}
                   <td className="px-4 py-3 align-top">
                     <Badge color={color} className="capitalize">{p.unit}</Badge>
                   </td>
 
-                  {/* FACTOR */}
                   <td className="px-4 py-3 align-top tabular-nums">{p.factor}</td>
 
-                  {/* OFFSET */}
                   <td className="px-4 py-3 align-top tabular-nums">{p.offset}</td>
 
-                  {/* STATUS */}
                   <td className="px-4 py-3 align-top">
                     <StatusPill active={p.active} />
                   </td>
 
-                  {/* ACTIONS */}
                   <td className="px-4 py-3 align-top">
                     <div className="flex justify-end gap-3 text-sm">
                       <button type="button" className="inline-flex items-center gap-1 text-blue-700 hover:underline">
