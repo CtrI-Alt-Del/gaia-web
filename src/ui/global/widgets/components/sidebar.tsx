@@ -1,11 +1,14 @@
 import {
-  BarChart3,
+  ChartLine,
   Bell,
-  Filter,
+  SlidersHorizontal,
   Settings,
   User,
   ChevronUp,
-} from "lucide-react";
+  RadioTower,
+  Newspaper,
+} from 'lucide-react'
+import { Avatar, AvatarFallback, AvatarImage } from '@/ui/shadcn/components/avatar'
 import {
   Sidebar,
   SidebarContent,
@@ -16,158 +19,155 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/ui/shadcn/components/sidebar";
+} from '@/ui/shadcn/components/sidebar'
 
-type Props = { current?: "/dashboard" | "/stations" | "/parameters" | "/alerts" | "/reports" | "/configuration" };
+type Props = {
+  current?:
+  | '/dashboard'
+  | '/stations'
+  | '/parameters'
+  | '/alerts'
+  | '/reports'
+  | '/configuration'
+}
 
-export function AppSidebar({ current = "/alerts" }: Props) {
-  const isActive = (path: Props["current"]) => current === path;
+export function AppSidebar({ current = '/alerts' }: Props) {
+  const isActive = (path: Props['current']) => current === path
+
+  const activeButtonStyles = 'bg-gradient-to-r from-green-100  to-transparent border-r-4 border-green-500'
+  const inactiveButtonStyles = 'hover:bg-gray-50'
+  const activeIconStyles = 'text-green-600'
+  const inactiveIconStyles = 'text-gray-600'
+  const activeTextStyles = 'text-gray-700 font-medium'
+  const inactiveTextStyles = 'text-gray-700'
+
+  const getButtonStyles = (path: Props['current']) =>
+    `flex items-center gap-3 px-4 py-3 transition ${isActive(path) ? activeButtonStyles : inactiveButtonStyles}`
+
+  const getIconStyles = (path: Props['current']) =>
+    `w-5 h-5 ${isActive(path) ? activeIconStyles : inactiveIconStyles}`
+
+  const getTextStyles = (path: Props['current']) =>
+    isActive(path) ? activeTextStyles : inactiveTextStyles
 
   return (
-    <Sidebar className="w-64 bg-white border-r border-gray-200">
-      {/* Header */}
-      <SidebarHeader className="p-6">
-        <div className="flex items-center gap-3">
-          {/* Marca (quadrado roxo com ponto verde) */}
-          <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg grid place-items-center">
-            <div className="w-4 h-4 bg-green-400 rounded-sm" />
-          </div>
-          <span className="text-lg font-bold text-gray-800 leading-none">Gaia</span>
+    <Sidebar className='w-64 bg-white border-r border-gray-200'>
+      <SidebarHeader className='p-6'>
+        <div className='flex items-center gap-1'>
+          <img
+            src='../../../../../public/images/logo.png'
+            alt='Logo'
+            className='w-9 h-9 border-2 border-gray-200 rounded-lg'
+          />
+          <span className='text-lg font-bold text-gray-800 leading-none'>Gaia</span>
         </div>
       </SidebarHeader>
 
-      {/* Menu */}
-      <SidebarContent className="px-3">
-        <SidebarGroup>
+      <SidebarContent className='px-0'>
+        <SidebarGroup className='p-0 mx-0'>
           <SidebarGroupContent>
             <SidebarMenu>
-
               <SidebarMenuItem>
-                <SidebarMenuButton asChild className="w-full">
+                <SidebarMenuButton asChild className='w-full rounded-none'>
                   <a
-                    href="/dashboard"
-                    className={`flex items-center gap-3 px-3 py-3 rounded-lg transition
-                                ${isActive("/dashboard")
-                                  ? "bg-gradient-to-r from-green-100 to-transparent"
-                                  : "hover:bg-gray-50"}`}
-                    aria-current={isActive("/dashboard") ? "page" : undefined}
+                    href='/dashboard'
+                    className={getButtonStyles('/dashboard')}
+                    aria-current={isActive('/dashboard') ? 'page' : undefined}
                   >
-                    <BarChart3 className={`w-5 h-5 ${isActive("/dashboard") ? "text-green-600" : "text-gray-600"}`} />
-                    <span className="text-gray-700">Dashboard</span>
+                    <ChartLine className={getIconStyles('/dashboard')} />
+                    <span className={getTextStyles('/dashboard')}>Dashboard</span>
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
               <SidebarMenuItem>
-                <SidebarMenuButton asChild className="w-full">
+                <SidebarMenuButton asChild className='w-full rounded-none'>
                   <a
-                    href="/stations"
-                    className={`flex items-center gap-3 px-3 py-3 rounded-lg transition
-                                ${isActive("/stations")
-                                  ? "bg-gradient-to-r from-green-100 to-transparent"
-                                  : "hover:bg-gray-50"}`}
-                    aria-current={isActive("/stations") ? "page" : undefined}
+                    href='/stations'
+                    className={getButtonStyles('/stations')}
+                    aria-current={isActive('/stations') ? 'page' : undefined}
                   >
-                    {/* “barrinhas” das estações */}
-                    <div className="w-5 h-5 flex items-end justify-center text-gray-600">
-                      <div className="w-1 h-4 bg-gray-600 rounded-full" />
-                      <div className="w-1 h-4 bg-gray-600 rounded-full mx-1" />
-                      <div className="w-1 h-1 bg-gray-600 rounded-full" />
-                    </div>
-                    <span className="text-gray-700">Estações</span>
+                    <RadioTower className={getIconStyles('/stations')} />
+                    <span className={getTextStyles('/stations')}>Estações</span>
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
               <SidebarMenuItem>
-                <SidebarMenuButton asChild className="w-full">
+                <SidebarMenuButton asChild className='w-full rounded-none'>
                   <a
-                    href="/parameters"
-                    className={`flex items-center gap-3 px-3 py-3 rounded-lg transition
-                                ${isActive("/parameters")
-                                  ? "bg-gradient-to-r from-green-100 to-transparent"
-                                  : "hover:bg-gray-50"}`}
-                    aria-current={isActive("/parameters") ? "page" : undefined}
+                    href='/parameters'
+                    className={getButtonStyles('/parameters')}
+                    aria-current={isActive('/parameters') ? 'page' : undefined}
                   >
-                    <Filter className={`w-5 h-5 ${isActive("/parameters") ? "text-green-600" : "text-gray-600"}`} />
-                    <span className="text-gray-700">Parâmetros</span>
+                    <SlidersHorizontal className={getIconStyles('/parameters')} />
+                    <span className={getTextStyles('/parameters')}>Parâmetros</span>
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
               <SidebarMenuItem>
-                {/* Item ativo “Alertas” com highlight idêntico ao mock */}
-                <SidebarMenuButton asChild isActive className="w-full">
+                <SidebarMenuButton asChild isActive className='w-full rounded-none'>
                   <a
-                    href="/alerts"
-                    className={`flex items-center gap-3 px-3 py-3 rounded-lg bg-gradient-to-r from-green-100 to-transparent`}
-                    aria-current="page"
+                    href='/alerts'
+                    className={getButtonStyles('/alerts')}
+                    aria-current='page'
                   >
-                    <Bell className="w-5 h-5 text-green-600" />
-                    <span className="text-gray-700 font-medium">Alertas</span>
+                    <Bell className={getIconStyles('/alerts')} />
+                    <span className={getTextStyles('/alerts')}>Alertas</span>
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
               <SidebarMenuItem>
-                <SidebarMenuButton asChild className="w-full">
+                <SidebarMenuButton asChild className='w-full rounded-none'>
                   <a
-                    href="/reports"
-                    className={`flex items-center gap-3 px-3 py-3 rounded-lg transition
-                                ${isActive("/reports")
-                                  ? "bg-gradient-to-r from-green-100 to-transparent"
-                                  : "hover:bg-gray-50"}`}
-                    aria-current={isActive("/reports") ? "page" : undefined}
+                    href='/reports'
+                    className={getButtonStyles('/reports')}
+                    aria-current={isActive('/reports') ? 'page' : undefined}
                   >
-                    <div className="w-5 h-5 flex items-center justify-center">
-                      <div className="w-4 h-4 border-2 border-gray-600 rounded-full flex items-center justify-center">
-                        <div className="w-1 h-2 bg-gray-600 rounded-full" />
-                        <div className="w-1 h-1 bg-gray-600 rounded-full ml-0.5" />
-                      </div>
-                    </div>
-                    <span className="text-gray-700">Relatórios</span>
+                    <Newspaper className={getIconStyles('/reports')} />
+                    <span className={getTextStyles('/reports')}>Relatórios</span>
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
               <SidebarMenuItem>
-                <SidebarMenuButton asChild className="w-full">
+                <SidebarMenuButton asChild className='w-full rounded-none'>
                   <a
-                    href="/configuration"
-                    className={`flex items-center gap-3 px-3 py-3 rounded-lg transition
-                                ${isActive("/configuration")
-                                  ? "bg-gradient-to-r from-green-100 to-transparent"
-                                  : "hover:bg-gray-50"}`}
-                    aria-current={isActive("/configuration") ? "page" : undefined}
+                    href='/configuration'
+                    className={getButtonStyles('/configuration')}
+                    aria-current={isActive('/configuration') ? 'page' : undefined}
                   >
-                    <Settings className={`w-5 h-5 ${isActive("/configuration") ? "text-green-600" : "text-gray-600"}`} />
-                    <span className="text-gray-700">Configuração</span>
+                    <Settings className={getIconStyles('/configuration')} />
+                    <span className={getTextStyles('/configuration')}>Configuração</span>
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
 
-      {/* Footer */}
-      <SidebarFooter className="p-4">
-        <div className="border-t border-gray-200 pt-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-200 to-pink-300 grid place-items-center">
-              <User className="w-6 h-6 text-pink-600" />
+      <SidebarFooter className='p-4'>
+        <div className='border-t border-gray-200 pt-4'>
+          <div className='flex items-center gap-3'>
+            <Avatar className='w-10 h-10'>
+              <AvatarImage src='https://github.com/shadcn.png' alt='Thigszin' />
+              <AvatarFallback className='bg-gradient-to-br from-pink-200 to-pink-300 text-pink-600 font-medium'>
+                T
+              </AvatarFallback>
+            </Avatar>
+
+            <div className='flex-1 min-w-0'>
+              <p className='text-sm font-medium text-gray-800 truncate'>Thigszin</p>
+              <p className='text-xs text-gray-500 truncate'>Administrador</p>
             </div>
 
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-800 truncate">Thigszin</p>
-              <p className="text-xs text-gray-500 truncate">Administrador</p>
-            </div>
-
-            <ChevronUp className="w-4 h-4 text-gray-400" />
+            <ChevronUp className='w-4 h-4 text-gray-400' />
           </div>
         </div>
       </SidebarFooter>
     </Sidebar>
-  );
+  )
 }
