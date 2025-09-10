@@ -4,6 +4,7 @@ import { Input } from "@/ui/shadcn/components/input";
 import { Button } from "@/ui/shadcn/components/button";
 import { Badge } from "@/ui/shadcn/components/badge";
 import { StatusPill } from "@/ui/shadcn/components/status-pill";
+import { Table, TableCaption, TableHead, TableHeader, TableRow } from "@/ui/shadcn/components/table";
 import { getParameterVisuals, getParameterTexts, palette } from "@/ui/telemetry/widgets/components/parameter-visuals";
 import { Pencil, Power, Eye } from "lucide-react";
 
@@ -38,11 +39,11 @@ export function ParametersPage({
 
   return (
     <section className="container mx-auto p-4 pt-16">
-      <header className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div>
+      {/* <TableHeader className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <TableRow>
           <h1 className="text-xl font-semibold">Parâmetros Meteorológicos</h1>
           <p className="text-sm text-stone-600">Filtro por nome</p>
-        </div>
+        </TableRow>
 
         <Form method="get" replace className="flex flex-wrap items-end gap-2">
           <div className="flex flex-col">
@@ -60,7 +61,7 @@ export function ParametersPage({
           </div>
           <Button type="submit" className="h-9">Aplicar</Button>
         </Form>
-      </header>
+      </TableHeader>
 
       <div className="overflow-x-auto rounded-lg border border-stone-200">
         <table className="min-w-full text-left text-sm">
@@ -159,7 +160,22 @@ export function ParametersPage({
             Próxima
           </Link>
         </nav>
-      </footer>
+      </footer> */}
+
+      <Table>
+        <TableCaption>Parâmetros Meteorológicos</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead>NOME</TableHead>
+            <TableHead>DESCRIÇÃO</TableHead>
+            <TableHead>UNIDADE</TableHead>
+            <TableHead>FATOR</TableHead>
+            <TableHead>OFFSET</TableHead>
+            <TableHead>STATUS</TableHead>
+            <TableHead>AÇÕES</TableHead>
+          </TableRow>
+        </TableHeader>
+      </Table>
     </section>
   );
 }

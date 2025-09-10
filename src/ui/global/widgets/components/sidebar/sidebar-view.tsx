@@ -29,6 +29,7 @@ const activeIconStyles = 'text-green-600'
 const inactiveIconStyles = 'text-gray-600'
 const activeTextStyles = 'text-gray-700 font-medium'
 const inactiveTextStyles = 'text-gray-700'
+const buttonStyles = 'w-full rounded-none'
 
 export function SidebarView() {
 
@@ -53,7 +54,7 @@ export function SidebarView() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild className='w-full rounded-none'>
+                <SidebarMenuButton asChild className={buttonStyles}>
                   <a
                     href={ROUTES.dashboard}
                     className={currentPath === ROUTES.dashboard ? activeButtonStyles : inactiveButtonStyles}
@@ -66,7 +67,7 @@ export function SidebarView() {
               </SidebarMenuItem>
 
               <SidebarMenuItem>
-                <SidebarMenuButton asChild className='w-full rounded-none'>
+                <SidebarMenuButton asChild className={buttonStyles}>
                   <a
                     href={ROUTES.stations}
                     className={currentPath === ROUTES.stations ? activeButtonStyles : inactiveButtonStyles}
@@ -79,7 +80,7 @@ export function SidebarView() {
               </SidebarMenuItem>
 
               <SidebarMenuItem>
-                <SidebarMenuButton asChild className='w-full rounded-none'>
+                <SidebarMenuButton asChild className={buttonStyles}>
                   <a
                     href={ROUTES.parameters}
                     className={currentPath === ROUTES.parameters ? activeButtonStyles : inactiveButtonStyles}
@@ -92,7 +93,7 @@ export function SidebarView() {
               </SidebarMenuItem>
 
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive className='w-full rounded-none'>
+                <SidebarMenuButton asChild className={buttonStyles}>
                   <a
                     href={ROUTES.alerts}
                     className={currentPath === ROUTES.alerts ? activeButtonStyles : inactiveButtonStyles}
@@ -105,7 +106,7 @@ export function SidebarView() {
               </SidebarMenuItem>
 
               <SidebarMenuItem>
-                <SidebarMenuButton asChild className='w-full rounded-none'>
+                <SidebarMenuButton asChild className={buttonStyles}>
                   <a
                     href={ROUTES.reports}
                     className={currentPath === ROUTES.reports ? activeButtonStyles : inactiveButtonStyles}
@@ -118,7 +119,7 @@ export function SidebarView() {
               </SidebarMenuItem>
 
               <SidebarMenuItem>
-                <SidebarMenuButton asChild className='w-full rounded-none'>
+                <SidebarMenuButton asChild className={buttonStyles}>
                   <a
                     href={ROUTES.configuration}
                     className={currentPath === ROUTES.configuration ? activeButtonStyles : inactiveButtonStyles}
