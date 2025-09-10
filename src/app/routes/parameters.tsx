@@ -2,7 +2,7 @@ import { Form, Link, useLoaderData } from "react-router";
 import type { Route } from "../+types/root";
 import { TelemetryService } from "@/rest/services/telemetry-service";
 import type { ParameterDto } from "@/core/dtos/ParameterDto";
-import { ParametersListPage } from "@/ui/telemetry/widgets/pages/parameters-list";
+import { ParametersPage } from "@/ui/telemetry/widgets/pages/parameters/parameters-page";
 
 type LoaderData = {
   items: ParameterDto[];
@@ -26,7 +26,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   return resp.body as LoaderData;
 }
 
-export default function ParametersRoute() {
+export default function Parameters() {
   const data = useLoaderData<LoaderData>();
-  return <ParametersListPage {...data} />;
+  return <ParametersPage {...data} />;
 }

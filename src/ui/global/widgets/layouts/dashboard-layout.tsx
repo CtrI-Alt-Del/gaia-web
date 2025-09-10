@@ -3,12 +3,12 @@ import {
   SidebarTrigger, 
   SidebarInset 
 } from "@/ui/shadcn/components/sidebar"
-import { AppSidebar } from "../components/sidebar"
+import Sidebar from "../components/sidebar"
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <Sidebar />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />

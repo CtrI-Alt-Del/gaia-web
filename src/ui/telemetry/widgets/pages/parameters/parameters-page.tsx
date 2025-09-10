@@ -3,10 +3,11 @@ import type { ParameterDto } from "@/core/dtos/ParameterDto";
 import { Input } from "@/ui/shadcn/components/input";
 import { Button } from "@/ui/shadcn/components/button";
 import { Badge } from "@/ui/shadcn/components/badge";
+import { StatusPill } from "@/ui/shadcn/components/status-pill";
 import { getParameterVisuals, getParameterTexts, palette } from "@/ui/telemetry/widgets/components/parameter-visuals";
 import { Pencil, Power, Eye } from "lucide-react";
 
-export type ParametersListPageProps = {
+export type ParametersPageProps = {
   items: ParameterDto[];
   nextCursor: string | null;
   prevCursor: string | null;
@@ -14,27 +15,13 @@ export type ParametersListPageProps = {
   q: string;
 };
 
-function StatusPill({ active }: { active: boolean }) {
-  return active ? (
-    <span className="inline-flex items-center gap-2 rounded-full bg-green-50 px-2.5 py-1 text-xs font-medium text-green-700 ring-1 ring-green-200">
-      <span className="size-2 rounded-full bg-green-500" />
-      Active
-    </span>
-  ) : (
-    <span className="inline-flex items-center gap-2 rounded-full bg-stone-100 px-2.5 py-1 text-xs font-medium text-stone-700 ring-1 ring-stone-300">
-      <span className="size-2 rounded-full bg-stone-500" />
-      Inactive
-    </span>
-  );
-}
-
-export function ParametersListPage({
+export function ParametersPage({
   items,
   nextCursor,
   prevCursor,
   limit,
   q,
-}: ParametersListPageProps) {
+}: ParametersPageProps) {
   const { search } = useLocation();
 
   const urlWith = (patch: Record<string, string | null>) => {
@@ -54,13 +41,13 @@ export function ParametersListPage({
       <header className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="text-xl font-semibold">Parâmetros Meteorológicos</h1>
-          <p className="text-sm text-stone-600">Filtro por nome • paginação por cursor</p>
+          <p className="text-sm text-stone-600">Filtro por nome</p>
         </div>
 
         <Form method="get" replace className="flex flex-wrap items-end gap-2">
           <div className="flex flex-col">
             <label htmlFor="q" className="text-xs text-stone-600">Filtrar por nome</label>
-            <Input id="q" name="q" defaultValue={q} placeholder="Ex.: Temperature" className="h-9 w-56" />
+            <Input id="q" name="q" defaultValue={q} placeholder="Ex.: Temperatura" className="h-9 w-56" />
           </div>
           <div className="flex flex-col">
             <label htmlFor="limit" className="text-xs text-stone-600">Itens por página</label>
@@ -79,13 +66,13 @@ export function ParametersListPage({
         <table className="min-w-full text-left text-sm">
           <thead className="bg-stone-50 text-stone-700">
             <tr>
-              <th className="px-4 py-3 font-medium">NAME</th>
-              <th className="px-4 py-3 font-medium">DESCRIPTION</th>
-              <th className="px-4 py-3 font-medium">UNIT</th>
-              <th className="px-4 py-3 font-medium">FACTOR</th>
+              <th className="px-4 py-3 font-medium">NOME</th>
+              <th className="px-4 py-3 font-medium">DESCRIÇÃO</th>
+              <th className="px-4 py-3 font-medium">UNIDADE</th>
+              <th className="px-4 py-3 font-medium">FATOR</th>
               <th className="px-4 py-3 font-medium">OFFSET</th>
               <th className="px-4 py-3 font-medium">STATUS</th>
-              <th className="px-4 py-3 font-medium text-right">ACTIONS</th>
+              <th className="px-4 py-3 font-medium text-center">AÇÕES</th>
             </tr>
           </thead>
 
@@ -136,14 +123,11 @@ export function ParametersListPage({
 
                   <td className="px-4 py-3 align-top">
                     <div className="flex justify-end gap-3 text-sm">
-                      <button type="button" className="inline-flex items-center gap-1 text-blue-700 hover:underline">
-                        <Eye className="size-4" /> View
+                      <button type="button" className="inline-flex items-center gap-1 text-stone-700 hover:underline cursor-pointer">
+                        <Pencil className="size-4" /> Editar
                       </button>
-                      <button type="button" className="inline-flex items-center gap-1 text-stone-700 hover:underline">
-                        <Pencil className="size-4" /> Edit
-                      </button>
-                      <button type="button" className="inline-flex items-center gap-1 text-red-700 hover:underline">
-                        <Power className="size-4" /> {p.active ? "Deactivate" : "Activate"}
+                      <button type="button" className="inline-flex items-center gap-1 text-red-700 hover:underline cursor-pointer">
+                        <Power className="size-4" /> {p.active ? "Desativar" : "Ativar"}
                       </button>
                     </div>
                   </td>
