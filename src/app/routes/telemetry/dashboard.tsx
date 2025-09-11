@@ -1,5 +1,5 @@
-const Dashboard = () => {
+const DashboardRoute = () => {
   return <div />
 }
 
-export default Dashboard
+export default DashboardRoute
