@@ -1,8 +1,8 @@
 import { ParametersPageView } from "./parameters-page-view";
-import { useParameters } from "./use-parameters";
+import { useParametersPage } from "./use-parameters-page";
 
 export default function Parameters() {
-  const parametersData = useParameters();
+  const parametersData = useParametersPage();
 
   return <ParametersPageView {...parametersData} />;
 }

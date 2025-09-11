@@ -87,7 +87,7 @@ export type ParametersPageProps = {
   status: string;
 };
 
-export function useParameters() {
+export function useParametersPage() {
   const { search } = useLocation();
 
   const searchParams = new URLSearchParams(search);
