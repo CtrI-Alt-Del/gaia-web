@@ -112,6 +112,18 @@ export function useParameters() {
   const prevCursor =
     startIndex > 0 ? String(Math.max(0, startIndex - limit)) : null;
 
+  const handleView = (id: string) => {
+    console.log("Visualizar parâmetro:", id);
+  };
+
+  const handleEdit = (id: string) => {
+    console.log("Editar parâmetro:", id);
+  };
+
+  const handleToggleStatus = (id: string) => {
+    console.log("Alternar status do parâmetro:", id);
+  };
+
   return {
     items,
     nextCursor,
@@ -120,5 +132,8 @@ export function useParameters() {
     q,
     status,
     searchParams,
+    onView: handleView,
+    onEdit: handleEdit,
+    onToggleStatus: handleToggleStatus,
   };
 }

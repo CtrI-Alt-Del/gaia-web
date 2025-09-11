@@ -14,7 +14,17 @@ import {
   TableCell,
   TableFooter,
 } from "@/ui/shadcn/components/table";
-import { Pencil, Power, Thermometer, Droplets, Wind, Sun, Cloud, Gauge } from "lucide-react";
+import {
+  Power,
+  Thermometer,
+  Droplets,
+  Wind,
+  Sun,
+  Cloud,
+  Gauge,
+  Eye,
+  Edit,
+} from "lucide-react";
 
 export type ParametersPageViewProps = {
   items: ParameterDto[];
@@ -24,100 +34,132 @@ export type ParametersPageViewProps = {
   q: string;
   status: string;
   searchParams: URLSearchParams;
+  onView?: (id: string) => void;
+  onEdit?: (id: string) => void;
+  onToggleStatus?: (id: string) => void;
 };
 
 // ‼️‼️‼️‼️ ESSA PAGINA ESTA MOCKADA APENAS POR DEMONSTRAÇÃO, NADA DISSO VAI ESTAR AQUI.
 
 const getParameterIcon = (name: string) => {
   const lowerName = name.toLowerCase();
-  if (lowerName.includes('temperatura')) return {
-    Icon: Thermometer,
-    iconColor: 'text-red-500',
-    badgeColor: 'bg-red-50 ring-red-200',
-    iconBgColor: 'bg-red-100'
-  };
-  if (lowerName.includes('umidade') || lowerName.includes('precipitação')) return {
-    Icon: Droplets,
-    iconColor: 'text-blue-500',
-    badgeColor: 'bg-blue-50 ring-blue-200',
-    iconBgColor: 'bg-blue-100'
-  };
-  if (lowerName.includes('vento')) return {
-    Icon: Wind,
-    iconColor: 'text-gray-500',
-    badgeColor: 'bg-gray-50 ring-gray-200',
-    iconBgColor: 'bg-gray-100'
-  };
-  if (lowerName.includes('radiação') || lowerName.includes('uv')) return {
-    Icon: Sun,
-    iconColor: 'text-yellow-500',
-    badgeColor: 'bg-yellow-50 ring-yellow-200',
-    iconBgColor: 'bg-yellow-100'
-  };
-  if (lowerName.includes('pressão')) return {
-    Icon: Gauge,
-    iconColor: 'text-purple-500',
-    badgeColor: 'bg-purple-50 ring-purple-200',
-    iconBgColor: 'bg-purple-100'
-  };
+  if (lowerName.includes("temperatura"))
+    return {
+      Icon: Thermometer,
+      iconColor: "text-red-500",
+      badgeColor: "bg-red-50 ring-red-200",
+      iconBgColor: "bg-red-100",
+    };
+  if (lowerName.includes("umidade") || lowerName.includes("precipitação"))
+    return {
+      Icon: Droplets,
+      iconColor: "text-blue-500",
+      badgeColor: "bg-blue-50 ring-blue-200",
+      iconBgColor: "bg-blue-100",
+    };
+  if (lowerName.includes("vento"))
+    return {
+      Icon: Wind,
+      iconColor: "text-gray-500",
+      badgeColor: "bg-gray-50 ring-gray-200",
+      iconBgColor: "bg-gray-100",
+    };
+  if (lowerName.includes("radiação") || lowerName.includes("uv"))
+    return {
+      Icon: Sun,
+      iconColor: "text-yellow-500",
+      badgeColor: "bg-yellow-50 ring-yellow-200",
+      iconBgColor: "bg-yellow-100",
+    };
+  if (lowerName.includes("pressão"))
+    return {
+      Icon: Gauge,
+      iconColor: "text-purple-500",
+      badgeColor: "bg-purple-50 ring-purple-200",
+      iconBgColor: "bg-purple-100",
+    };
   return {
     Icon: Cloud,
-    iconColor: 'text-gray-400',
-    badgeColor: 'bg-gray-50 ring-gray-200',
-    iconBgColor: 'bg-gray-100'
+    iconColor: "text-gray-400",
+    badgeColor: "bg-gray-50 ring-gray-200",
+    iconBgColor: "bg-gray-100",
   };
 };
 
-const getBadgeColor = (unit: string): 'stone' | 'blue' | 'sky' | 'teal' | 'green' | 'yellow' | 'orange' | 'red' | 'violet' => {
-  const unitColors: Record<string, 'stone' | 'blue' | 'sky' | 'teal' | 'green' | 'yellow' | 'orange' | 'red' | 'violet'> = {
-    '°C': 'blue',
-    '%': 'green',
-    'hPa': 'violet',
-    'm/s': 'orange',
-    '°': 'sky',
-    'W/m²': 'yellow',
-    'mm': 'teal',
-    'índice': 'red'
+const getBadgeColor = (
+  unit: string
+):
+  | "stone"
+  | "blue"
+  | "sky"
+  | "teal"
+  | "green"
+  | "yellow"
+  | "orange"
+  | "red"
+  | "violet" => {
+  const unitColors: Record<
+    string,
+    | "stone"
+    | "blue"
+    | "sky"
+    | "teal"
+    | "green"
+    | "yellow"
+    | "orange"
+    | "red"
+    | "violet"
+  > = {
+    "°C": "blue",
+    "%": "green",
+    hPa: "violet",
+    "m/s": "orange",
+    "°": "sky",
+    "W/m²": "yellow",
+    mm: "teal",
+    índice: "red",
   };
-  return unitColors[unit] || 'stone';
+  return unitColors[unit] || "stone";
 };
 
 const getParameterInfo = (name: string) => {
   const info: Record<string, { description: string; category: string }> = {
-    'Temperatura do Ar': {
-      description: 'Medição da temperatura ambiente',
-      category: 'Temperatura'
+    "Temperatura do Ar": {
+      description: "Medição da temperatura ambiente",
+      category: "Temperatura",
     },
-    'Umidade Relativa': {
-      description: 'Percentual de umidade no ar',
-      category: 'Umidade'
+    "Umidade Relativa": {
+      description: "Percentual de umidade no ar",
+      category: "Umidade",
     },
-    'Pressão Atmosférica': {
-      description: 'Pressão exercida pela atmosfera',
-      category: 'Pressão'
+    "Pressão Atmosférica": {
+      description: "Pressão exercida pela atmosfera",
+      category: "Pressão",
     },
-    'Velocidade do Vento': {
-      description: 'Velocidade do movimento do ar',
-      category: 'Vento'
+    "Velocidade do Vento": {
+      description: "Velocidade do movimento do ar",
+      category: "Vento",
     },
-    'Direção do Vento': {
-      description: 'Direção de onde vem o vento',
-      category: 'Vento'
+    "Direção do Vento": {
+      description: "Direção de onde vem o vento",
+      category: "Vento",
     },
-    'Radiação Solar': {
-      description: 'Intensidade da radiação solar',
-      category: 'Radiação'
+    "Radiação Solar": {
+      description: "Intensidade da radiação solar",
+      category: "Radiação",
     },
-    'Precipitação': {
-      description: 'Quantidade de chuva acumulada',
-      category: 'Precipitação'
+    Precipitação: {
+      description: "Quantidade de chuva acumulada",
+      category: "Precipitação",
     },
-    'Índice UV': {
-      description: 'Índice de radiação ultravioleta',
-      category: 'Radiação'
-    }
+    "Índice UV": {
+      description: "Índice de radiação ultravioleta",
+      category: "Radiação",
+    },
   };
-  return info[name] || { description: 'Parâmetro meteorológico', category: 'Geral' };
+  return (
+    info[name] || { description: "Parâmetro meteorológico", category: "Geral" }
+  );
 };
 
 const urlWith = (params: Record<string, string>) => {
@@ -139,9 +181,11 @@ export function ParametersPageView({
   limit,
   q,
   status,
-  searchParams
+  searchParams,
+  onView,
+  onEdit,
+  onToggleStatus,
 }: ParametersPageViewProps) {
-
   return (
     <section className="container mx-auto p-4 pt-16">
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -155,7 +199,13 @@ export function ParametersPageView({
             <label htmlFor="q" className="text-xs text-stone-600">
               Filtrar por nome
             </label>
-            <Input id="q" name="q" defaultValue={q} placeholder="Ex.: Temperatura" className="h-9 w-56" />
+            <Input
+              id="q"
+              name="q"
+              defaultValue={q}
+              placeholder="Ex.: Temperatura"
+              className="h-9 w-56"
+            />
           </div>
           <div className="flex flex-col">
             <label htmlFor="status" className="text-xs text-stone-600">
@@ -164,7 +214,7 @@ export function ParametersPageView({
             <select
               id="status"
               name="status"
-              defaultValue={searchParams.get('status') || 'all'}
+              defaultValue={searchParams.get("status") || "all"}
               className="h-9 rounded-md border border-stone-300 px-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="all">Todos</option>
@@ -214,14 +264,21 @@ export function ParametersPageView({
           <TableBody>
             {items.length === 0 && (
               <TableRow>
-                <TableCell colSpan={7} className="text-center text-stone-500 py-10">
+                <TableCell
+                  colSpan={7}
+                  className="text-center text-stone-500 py-10"
+                >
                   Nenhum parâmetro encontrado.
                 </TableCell>
               </TableRow>
             )}
 
             {items.map((p) => {
-              const { Icon: IconComponent, iconColor, badgeColor } = getParameterIcon(p.name);
+              const {
+                Icon: IconComponent,
+                iconColor,
+                badgeColor,
+              } = getParameterIcon(p.name);
               const { description, category } = getParameterInfo(p.name);
               const color = getBadgeColor(p.unit);
 
@@ -237,7 +294,8 @@ export function ParametersPageView({
                       <div className="leading-tight">
                         <div className="font-medium">{p.name}</div>
                         <div className="text-xs text-stone-500">
-                          Criado em {new Date(p.createdAt).toLocaleString("pt-BR")}
+                          Criado em{" "}
+                          {new Date(p.createdAt).toLocaleString("pt-BR")}
                         </div>
                       </div>
                     </div>
@@ -262,19 +320,44 @@ export function ParametersPageView({
                   </TableCell>
 
                   <TableCell className="text-right">
-                    <div className="inline-flex items-center justify-end gap-3 text-sm">
-                      <button
-                        type="button"
-                        className="inline-flex items-center gap-1 text-stone-700 hover:underline"
-                      >
-                        <Pencil className="size-4" /> Editar
-                      </button>
-                      <button
-                        type="button"
-                        className="inline-flex items-center gap-1 text-red-700 hover:underline"
-                      >
-                        <Power className="size-4" /> {p.active ? "Desativar" : "Ativar"}
-                      </button>
+                    <div className="flex gap-2 justify-center">
+                      {onView && (
+                        <button
+                          type="button"
+                          onClick={() => onView(p.id)}
+                          className="inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer bg-blue-100 hover:bg-blue-200 text-blue-700 hover:text-blue-800 border border-blue-200"
+                          title="Visualizar parâmetro"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </button>
+                      )}
+                      {onEdit && (
+                        <button
+                          type="button"
+                          onClick={() => onEdit(p.id)}
+                          className="inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 hover:text-gray-800 border border-gray-200"
+                          title="Editar parâmetro"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </button>
+                      )}
+                      {onToggleStatus && (
+                        <button
+                          type="button"
+                          onClick={() => onToggleStatus(p.id)}
+                          className={`inline-flex items-center justify-center p-2 rounded-full transition-colors cursor-pointer ${p.active
+                            ? "bg-orange-100 hover:bg-orange-200 text-orange-700 hover:text-orange-800 border border-orange-200"
+                            : "bg-green-100 hover:bg-green-200 text-green-700 hover:text-green-800 border border-green-200"
+                            }`}
+                          title={
+                            p.active
+                              ? "Desativar parâmetro"
+                              : "Ativar parâmetro"
+                          }
+                        >
+                          <Power className="w-4 h-4" />
+                        </button>
+                      )}
                     </div>
                   </TableCell>
                 </TableRow>
@@ -285,14 +368,22 @@ export function ParametersPageView({
           <TableFooter>
             <TableRow>
               <TableCell colSpan={4} className="text-xs text-stone-600">
-                Mostrando até {limit} itens • Nome: {q ? `"${q}"` : "nenhum"} • Status: {status === 'all' ? 'todos' : status === 'active' ? 'ativos' : 'inativos'}
+                Mostrando até {limit} itens • Nome: {q ? `"${q}"` : "nenhum"} •
+                Status:{" "}
+                {status === "all"
+                  ? "todos"
+                  : status === "active"
+                    ? "ativos"
+                    : "inativos"}
               </TableCell>
               <TableCell colSpan={3} className="text-right">
                 <nav className="inline-flex items-center gap-2">
                   <Link
                     to={prevCursor ? urlWith({ cursor: prevCursor }) : "#"}
                     aria-disabled={!prevCursor}
-                    className={`rounded-full border px-3 py-1.5 text-sm ${prevCursor ? "hover:bg-stone-50" : "pointer-events-none opacity-50"
+                    className={`rounded-full border px-3 py-1.5 text-sm ${prevCursor
+                      ? "hover:bg-stone-50"
+                      : "pointer-events-none opacity-50"
                       }`}
                   >
                     Anterior
@@ -300,7 +391,9 @@ export function ParametersPageView({
                   <Link
                     to={nextCursor ? urlWith({ cursor: nextCursor }) : "#"}
                     aria-disabled={!nextCursor}
-                    className={`rounded-full border px-3 py-1.5 text-sm ${nextCursor ? "hover:bg-stone-50" : "pointer-events-none opacity-50"
+                    className={`rounded-full border px-3 py-1.5 text-sm ${nextCursor
+                      ? "hover:bg-stone-50"
+                      : "pointer-events-none opacity-50"
                       }`}
                   >
                     Próxima
