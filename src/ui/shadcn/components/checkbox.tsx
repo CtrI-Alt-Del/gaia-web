@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Checkbox as CheckboxPrimitive } from "radix-ui"
 
-import { cn } from "@/ui/shadcn/utils/utils"
+import { cn } from "../utils"
 
 function Checkbox({
   className,

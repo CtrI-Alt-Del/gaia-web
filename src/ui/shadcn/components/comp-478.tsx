@@ -2,9 +2,9 @@
 
 import { useId, useMemo, useState } from "react"
 import {
-  Column,
-  ColumnDef,
-  ColumnFiltersState,
+  type Column,
+  type ColumnDef,
+  type ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFacetedMinMaxValues,
@@ -12,8 +12,8 @@ import {
   getFacetedUniqueValues,
   getFilteredRowModel,
   getSortedRowModel,
-  RowData,
-  SortingState,
+  type RowData,
+  type SortingState,
   useReactTable,
 } from "@tanstack/react-table"
 import {
@@ -23,7 +23,7 @@ import {
   SearchIcon,
 } from "lucide-react"
 
-import { cn } from "@/ui/shadcn/utils/utils"
+import { cn } from "../utils"
 import { Checkbox } from "@/ui/shadcn/components/checkbox"
 import { Input } from "@/ui/shadcn/components/input"
 import { Label } from "@/ui/shadcn/components/label"
@@ -169,7 +169,7 @@ const columns: ColumnDef<Item>[] = [
     header: "Link",
     accessorKey: "link",
     cell: ({ row }) => (
-      <a className="inline-flex items-center gap-1 hover:underline" href="#">
+      <a className="inline-flex items-center gap-1 hover:underline" href="https://originui.com">
         {row.getValue("link")} <ExternalLinkIcon size={12} aria-hidden="true" />
       </a>
     ),
@@ -326,7 +326,7 @@ export default function Component() {
                       <div
                         className={cn(
                           header.column.getCanSort() &&
-                            "flex h-full cursor-pointer items-center justify-between gap-2 select-none"
+                          "flex h-full cursor-pointer items-center justify-between gap-2 select-none"
                         )}
                         onClick={header.column.getToggleSortingHandler()}
                         onKeyDown={(e) => {
@@ -361,8 +361,8 @@ export default function Component() {
                             />
                           ),
                         }[header.column.getIsSorted() as string] ?? (
-                          <span className="size-4" aria-hidden="true" />
-                        )}
+                            <span className="size-4" aria-hidden="true" />
+                          )}
                       </div>
                     ) : (
                       flexRender(

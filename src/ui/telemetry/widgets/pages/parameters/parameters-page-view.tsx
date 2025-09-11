@@ -1,4 +1,4 @@
-import { Link, Form, useLocation } from "react-router";
+import { Link, Form } from "react-router";
 import type { ParameterDto } from "@/core/dtos/ParameterDto";
 import { Input } from "@/ui/shadcn/components/input";
 import { Button } from "@/ui/shadcn/components/button";
@@ -16,90 +16,17 @@ import {
 } from "@/ui/shadcn/components/table";
 import { Pencil, Power, Thermometer, Droplets, Wind, Sun, Cloud, Gauge } from "lucide-react";
 
-export type ParametersPageProps = {
+export type ParametersPageViewProps = {
   items: ParameterDto[];
   nextCursor: string | null;
   prevCursor: string | null;
   limit: number;
   q: string;
+  status: string;
+  searchParams: URLSearchParams;
 };
 
 // ‼️‼️‼️‼️ ESSA PAGINA ESTA MOCKADA APENAS POR DEMONSTRAÇÃO, NADA DISSO VAI ESTAR AQUI.
-
-const mockParameters: ParameterDto[] = [
-  {
-    id: "1",
-    name: "Temperatura do Ar",
-    unit: "°C",
-    factor: 0.1,
-    offset: -40.0,
-    active: true,
-    createdAt: "2024-01-15T10:30:00Z"
-  },
-  {
-    id: "2",
-    name: "Umidade Relativa",
-    unit: "%",
-    factor: 0.1,
-    offset: 0.0,
-    active: true,
-    createdAt: "2024-01-15T10:35:00Z"
-  },
-  {
-    id: "3",
-    name: "Pressão Atmosférica",
-    unit: "hPa",
-    factor: 0.1,
-    offset: 300.0,
-    active: true,
-    createdAt: "2024-01-15T10:40:00Z"
-  },
-  {
-    id: "4",
-    name: "Velocidade do Vento",
-    unit: "m/s",
-    factor: 0.1,
-    offset: 0.0,
-    active: false,
-    createdAt: "2024-01-15T10:45:00Z"
-  },
-  {
-    id: "5",
-    name: "Direção do Vento",
-    unit: "°",
-    factor: 1.0,
-    offset: 0.0,
-    active: true,
-    createdAt: "2024-01-15T10:50:00Z"
-  },
-  {
-    id: "6",
-    name: "Radiação Solar",
-    unit: "W/m²",
-    factor: 1.0,
-    offset: 0.0,
-    active: true,
-    createdAt: "2024-01-15T10:55:00Z"
-  },
-  {
-    id: "7",
-    name: "Precipitação",
-    unit: "mm",
-    factor: 0.1,
-    offset: 0.0,
-    active: false,
-    createdAt: "2024-01-15T11:00:00Z"
-  },
-  {
-    id: "8",
-    name: "Índice UV",
-    unit: "índice",
-    factor: 0.1,
-    offset: 0.0,
-    active: true,
-    createdAt: "2024-01-15T11:05:00Z"
-  }
-];
 
 const getParameterIcon = (name: string) => {
   const lowerName = name.toLowerCase();
@@ -205,28 +132,15 @@ const urlWith = (params: Record<string, string>) => {
   return `?${searchParams.toString()}`;
 };
 
-export function ParametersPage() {
-  const { search } = useLocation();
-
-  const searchParams = new URLSearchParams(search);
-  const q = searchParams.get('q') || '';
-  const status = searchParams.get('status') || 'all';
-  const limit = parseInt(searchParams.get('limit') || '10');
-  const cursor = searchParams.get('cursor');
-
-  const filteredItems = mockParameters.filter(item => {
-    const matchesName = item.name.toLowerCase().includes(q.toLowerCase());
-    const matchesStatus = status === 'all' ||
-      (status === 'active' && item.active) ||
-      (status === 'inactive' && !item.active);
-    return matchesName && matchesStatus;
-  });
-
-  const startIndex = cursor ? parseInt(cursor) : 0;
-  const endIndex = startIndex + limit;
-  const items = filteredItems.slice(startIndex, endIndex);
-  const nextCursor = endIndex < filteredItems.length ? String(endIndex) : null;
-  const prevCursor = startIndex > 0 ? String(Math.max(0, startIndex - limit)) : null;
+export function ParametersPageView({
+  items,
+  nextCursor,
+  prevCursor,
+  limit,
+  q,
+  status,
+  searchParams
+}: ParametersPageViewProps) {
 
   return (
     <section className="container mx-auto p-4 pt-16">
@@ -287,13 +201,13 @@ export function ParametersPage() {
 
           <TableHeader>
             <TableRow>
-              <TableHead>NOME</TableHead>
-              <TableHead>DESCRIÇÃO</TableHead>
-              <TableHead>UNIDADE</TableHead>
-              <TableHead>FATOR</TableHead>
-              <TableHead>OFFSET</TableHead>
-              <TableHead>STATUS</TableHead>
-              <TableHead className="text-right">AÇÕES</TableHead>
+              <TableHead>Nome</TableHead>
+              <TableHead>Descrição</TableHead>
+              <TableHead>Unidade</TableHead>
+              <TableHead>Fator</TableHead>
+              <TableHead>Offset</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead className="text-right">Ações</TableHead>
             </TableRow>
           </TableHeader>
 
