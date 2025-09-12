@@ -2,15 +2,14 @@ import { Button } from "@/ui/shadcn/components/button";
 import { Input } from "@/ui/shadcn/components/input";
 import { Label } from "@/ui/shadcn/components/label";
 import { Checkbox } from "@/ui/shadcn/components/checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/ui/shadcn/components/select";
-import type { ParameterFormData, iconOptions } from "./use-parameter-form";
+import type { ParameterFormData } from "./use-parameter-form";
+import type { ParameterIconType } from "./use-parameter-icon";
 
 export type ParameterFormViewProps = {
   form: any;
-  selectedIcon: any;
+  selectedIcon: ParameterIconType;
   onSubmit: (data: ParameterFormData) => void;
   onCancel: () => void;
-  iconOptions: typeof iconOptions;
 };
 
 export function ParameterFormView({
@@ -18,7 +17,6 @@ export function ParameterFormView({
   selectedIcon,
   onSubmit,
   onCancel,
-  iconOptions,
 }: ParameterFormViewProps) {
   const {
     register,
@@ -33,13 +31,13 @@ export function ParameterFormView({
       <div className="flex items-center justify-center p-4 bg-gray-50 rounded-lg">
         <div className="flex items-center gap-3">
           <span
-            className={`inline-flex size-12 items-center justify-center rounded-xl ring-1 ${selectedIcon.iconInfo.badgeColor}`}
+            className={`inline-flex size-12 items-center justify-center rounded-xl ring-1 ${selectedIcon.badgeColor}`}
           >
-            <selectedIcon.iconInfo.Icon className={`size-6 ${selectedIcon.iconInfo.iconColor}`} />
+            <selectedIcon.Icon className={`size-6 ${selectedIcon.iconColor}`} />
           </span>
           <div className="text-center">
             <div className="text-sm font-medium text-gray-700">Preview do Ícone</div>
-            <div className="text-xs text-gray-500">{selectedIcon.label}</div>
+            <div className="text-xs text-gray-500">Ícone baseado na unidade</div>
           </div>
         </div>
       </div>
@@ -71,43 +69,13 @@ export function ParameterFormView({
         <Input
           id="unit"
           {...register("unit")}
-          placeholder="Ex: °C, %, hPa, m/s"
+          placeholder="Ex: °C, %, hPa, m/s, W/m², km, W, °"
           className={errors.unit ? "border-red-500" : ""}
         />
         {errors.unit && (
           <p className="text-sm text-red-500">{errors.unit.message}</p>
         )}
       </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="iconType">Ícone *</Label>
-        <Select
-          value={watch("iconType")}
-          onValueChange={(value) => setValue("iconType", value)}
-        >
-          <SelectTrigger className={errors.iconType ? "border-red-500" : ""}>
-            <SelectValue placeholder="Selecione um ícone" />
-          </SelectTrigger>
-          <SelectContent>
-            {iconOptions.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                <div className="flex items-center gap-2">
-                  <span
-                    className={`inline-flex size-6 items-center justify-center rounded-lg ring-1 ${option.iconInfo.badgeColor}`}
-                  >
-                    <option.iconInfo.Icon className={`size-4 ${option.iconInfo.iconColor}`} />
-                  </span>
-                  <span>{option.label}</span>
-                </div>
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        {errors.iconType && (
-          <p className="text-sm text-red-500">{errors.iconType.message}</p>
-        )}
-      </div>
-
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="factor">Fator *</Label>

@@ -6,15 +6,14 @@ export type ParameterFormProps = {
 };
 
 export function ParameterForm({ onCancel }: ParameterFormProps) {
-  const { form, selectedIcon, onSubmit, iconOptions } = useParameterForm();
+  const { form, selectedIcon, handleSubmit } = useParameterForm();
 
   return (
     <ParameterFormView
       form={form}
       selectedIcon={selectedIcon}
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit}
       onCancel={onCancel}
-      iconOptions={iconOptions}
     />
   );
 }
