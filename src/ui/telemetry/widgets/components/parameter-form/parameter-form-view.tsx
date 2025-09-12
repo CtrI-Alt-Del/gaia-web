@@ -141,8 +141,8 @@ export function ParameterFormView({
       <div className="flex items-center space-x-2">
         <Checkbox
           id="active"
-          {...register("active")}
           checked={watch("active")}
+          onCheckedChange={(checked) => setValue("active", checked as boolean)}
         />
         <Label htmlFor="active" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
           Parâmetro ativo
