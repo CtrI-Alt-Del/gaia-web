@@ -21,7 +21,7 @@ export type ParameterIconType = {
   iconBgColor: string;
 };
 
-export function getParameterIconFromUnit(unit: string): ParameterIconInfo {
+export function getParameterIconFromUnit(unit: string): ParameterIconType {
   const unitLower = unit.toLowerCase();
 
   // Temperatura - Múltiplas escalas e variações
