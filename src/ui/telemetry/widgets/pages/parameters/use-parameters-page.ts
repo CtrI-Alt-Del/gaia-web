@@ -1,6 +1,6 @@
 import { useLocation } from "react-router";
 import { useState } from "react";
-import type { ParameterDto } from "@/core/dtos/ParameterDto";
+import type { ParameterDto } from "@/core/dtos/Parameter-dto";
 
 // ‼️‼️‼️‼️ ESSA PAGINA ESTA MOCKADA APENAS POR DEMONSTRAÇÃO, NADA DISSO VAI ESTAR AQUI.
 

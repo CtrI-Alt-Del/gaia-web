@@ -1,5 +1,5 @@
 import { Link, Form } from "react-router";
-import type { ParameterDto } from "@/core/dtos/ParameterDto";
+import type { ParameterDto } from "@/core/dtos/parameter-dto";
 import { Input } from "@/ui/shadcn/components/input";
 import { Button } from "@/ui/shadcn/components/button";
 import { Badge } from "@/ui/shadcn/components/badge";
