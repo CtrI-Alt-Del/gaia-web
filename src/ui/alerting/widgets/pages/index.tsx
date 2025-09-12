@@ -1,82 +1,62 @@
-import { AlertsPageView } from './alerts-page-view'
-import { useAlerts, type AlertFilters } from './use-alerts'
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
+import { useSearchParams } from 'react-router'
+import { AlarmsPageView } from './alarms-page-view'
+import { useAlarms } from './use-alarms'
 
-export const AlertsPage = () => {
-  const { alerts, stats, filterAlerts, getAlertById, deleteAlert } = useAlerts()
-
-  const [filters, setFilters] = useState<AlertFilters>({
-    search: '',
-    status: 'all',
-  })
-
+export const AlarmsPage = () => {
+  const { allAlarms, stats, filterAlarms, getPaginatedAlarms } = useAlarms()
+  const [searchParams] = useSearchParams()
   const [error, setError] = useState<string | null>(null)
 
-  const filteredAlerts = useMemo(() => {
-    return filterAlerts(alerts, filters)
-  }, [alerts, filters, filterAlerts])
+  const search = searchParams.get('q') || ''
+  const status = (searchParams.get('status') as 'all' | 'active' | 'inactive') || 'all'
+  const limit = parseInt(searchParams.get('limit') || '10', 10)
+  const cursor = searchParams.get('cursor')
 
-  const handleSearchChange = (search: string) => {
-    setFilters((prev) => ({ ...prev, search }))
+  const filters = { search, status }
+
+  const filteredAlarms = filterAlarms(allAlarms, filters)
+
+  const { alarms, nextCursor, prevCursor } = getPaginatedAlarms(
+    filteredAlarms,
+    limit,
+    cursor,
+  )
+
+  const pagination = {
+    limit,
+    cursor,
+    nextCursor,
+    prevCursor,
   }
 
-  const handleStatusFilterChange = (status: 'all' | 'active' | 'inactive') => {
-    setFilters((prev) => ({ ...prev, status }))
+  const handleViewAlarm = (alarmId: string) => {
+    console.log('Visualizar alarme:', alarmId)
   }
 
-  const handleViewAlert = (alertId: string) => {
-    try {
-      const alert = getAlertById(alertId)
-      if (alert) {
-        console.log('Visualizando alerta:', alert)
-      } else {
-        setError('Alerta não encontrado')
-      }
-    } catch {
-      setError('Erro ao visualizar alerta')
-    }
+  const handleEditAlarm = (alarmId: string) => {
+    console.log('Editar alarme:', alarmId)
   }
 
-  const handleEditAlert = (alertId: string) => {
-    try {
-      const alert = getAlertById(alertId)
-      if (alert) {
-        console.log('Editando alerta:', alert)
-      } else {
-        setError('Alerta não encontrado')
-      }
-    } catch {
-      setError('Erro ao editar alerta')
-    }
+  const handleDeleteAlarm = (alarmId: string) => {
+    console.log('Deletar alarme:', alarmId)
   }
 
-  const handleDeleteAlert = async (alertId: string) => {
-    try {
-      setError(null)
-
-      const success = deleteAlert(alertId)
-      if (success) {
-        console.log('Alerta deletado com sucesso')
-      } else {
-        setError('Erro ao deletar alerta')
-      }
-    } catch {
-      setError('Erro ao deletar alerta')
-    }
+  const handleClearError = () => {
+    setError(null)
   }
 
   return (
-    <AlertsPageView
-      alerts={filteredAlerts}
+    <AlarmsPageView
+      alarms={alarms}
       stats={stats}
       filters={filters}
+      pagination={pagination}
       error={error}
-      onSearchChange={handleSearchChange}
-      onStatusFilterChange={handleStatusFilterChange}
-      onViewAlert={handleViewAlert}
-      onEditAlert={handleEditAlert}
-      onDeleteAlert={handleDeleteAlert}
-      onClearError={() => setError(null)}
+      onViewAlarm={handleViewAlarm}
+      onEditAlarm={handleEditAlarm}
+      onDeleteAlarm={handleDeleteAlarm}
+      onClearError={handleClearError}
     />
   )
 }
