@@ -1,9 +1,9 @@
-import { AlertsPage } from '@/ui/alerting/widgets/pages'
+import { AlarmsPage } from '@/ui/alerting/widgets/pages'
 
 const Root = () => {
   return (
     <div>
-      <AlertsPage />
+      <AlarmsPage />
     </div>
   )
 }
