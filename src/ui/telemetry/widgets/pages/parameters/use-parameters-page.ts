@@ -1,4 +1,5 @@
 import { useLocation } from "react-router";
+import { useState } from "react";
 import type { ParameterDto } from "@/core/dtos/ParameterDto";
 
 // ‼️‼️‼️‼️ ESSA PAGINA ESTA MOCKADA APENAS POR DEMONSTRAÇÃO, NADA DISSO VAI ESTAR AQUI.
@@ -89,6 +90,7 @@ export type ParametersPageProps = {
 
 export function useParametersPage() {
   const { search } = useLocation();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const searchParams = new URLSearchParams(search);
   const q = searchParams.get("q") || "";
@@ -124,6 +126,14 @@ export function useParametersPage() {
     console.log("Alternar status do parâmetro:", id);
   };
 
+  const handleNewParameter = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   return {
     items,
     nextCursor,
@@ -132,8 +142,11 @@ export function useParametersPage() {
     q,
     status,
     searchParams,
+    isModalOpen,
     onView: handleView,
     onEdit: handleEdit,
     onToggleStatus: handleToggleStatus,
+    onNewParameter: handleNewParameter,
+    onCloseModal: handleCloseModal,
   };
 }

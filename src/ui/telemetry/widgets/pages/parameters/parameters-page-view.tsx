@@ -24,6 +24,7 @@ import {
   Gauge,
   Eye,
   Edit,
+  Plus,
 } from "lucide-react";
 
 export type ParametersPageViewProps = {
@@ -37,6 +38,7 @@ export type ParametersPageViewProps = {
   onView?: (id: string) => void;
   onEdit?: (id: string) => void;
   onToggleStatus?: (id: string) => void;
+  onNewParameter?: () => void;
 };
 
 // ‼️‼️‼️‼️ ESSA PAGINA ESTA MOCKADA APENAS POR DEMONSTRAÇÃO, NADA DISSO VAI ESTAR AQUI.
@@ -185,6 +187,7 @@ export function ParametersPageView({
   onView,
   onEdit,
   onToggleStatus,
+  onNewParameter,
 }: ParametersPageViewProps) {
   return (
     <section className="container mx-auto p-4 pt-16">
@@ -194,55 +197,64 @@ export function ParametersPageView({
           <p className="text-sm text-stone-600">Filtros por nome e status</p>
         </div>
 
-        <Form method="get" replace className="flex flex-wrap items-end gap-2">
-          <div className="flex flex-col">
-            <label htmlFor="q" className="text-xs text-stone-600">
-              Filtrar por nome
-            </label>
-            <Input
-              id="q"
-              name="q"
-              defaultValue={q}
-              placeholder="Ex.: Temperatura"
-              className="h-9 w-56"
-            />
-          </div>
-          <div className="flex flex-col">
-            <label htmlFor="status" className="text-xs text-stone-600">
-              Status
-            </label>
-            <select
-              id="status"
-              name="status"
-              defaultValue={searchParams.get("status") || "all"}
-              className="h-9 rounded-md border border-stone-300 px-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="all">Todos</option>
-              <option value="active">Ativos</option>
-              <option value="inactive">Inativos</option>
-            </select>
-          </div>
-          <div className="flex flex-col">
-            <label htmlFor="limit" className="text-xs text-stone-600">
-              Itens por página
-            </label>
-            <select
-              id="limit"
-              name="limit"
-              defaultValue={String(limit ?? 10)}
-              className="h-9 rounded-md border border-stone-300 px-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              {[5, 10, 20, 50].map((v) => (
-                <option key={v} value={v}>
-                  {v}
-                </option>
-              ))}
-            </select>
-          </div>
-          <Button type="submit" className="h-9">
-            Aplicar
-          </Button>
-        </Form>
+        <div className="flex flex-wrap items-end gap-2">
+          <Form method="get" replace className="flex flex-wrap items-end gap-2">
+            <div className="flex flex-col">
+              <label htmlFor="q" className="text-xs text-stone-600">
+                Filtrar por nome
+              </label>
+              <Input
+                id="q"
+                name="q"
+                defaultValue={q}
+                placeholder="Ex.: Temperatura"
+                className="h-9 w-56"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="status" className="text-xs text-stone-600">
+                Status
+              </label>
+              <select
+                id="status"
+                name="status"
+                defaultValue={searchParams.get("status") || "all"}
+                className="h-9 rounded-md border border-stone-300 px-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="all">Todos</option>
+                <option value="active">Ativos</option>
+                <option value="inactive">Inativos</option>
+              </select>
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="limit" className="text-xs text-stone-600">
+                Itens por página
+              </label>
+              <select
+                id="limit"
+                name="limit"
+                defaultValue={String(limit ?? 10)}
+                className="h-9 rounded-md border border-stone-300 px-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {[5, 10, 20, 50].map((v) => (
+                  <option key={v} value={v}>
+                    {v}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <Button type="submit" className="h-9">
+              Aplicar
+            </Button>
+          </Form>
+
+          {onNewParameter && (
+            <Button onClick={onNewParameter} className="flex items-center gap-2 h-9">
+              <Plus className="w-4 h-4" />
+              Novo Parâmetro
+            </Button>
+          )}
+        </div>
       </div>
 
       <div className="rounded-lg border border-stone-200">
