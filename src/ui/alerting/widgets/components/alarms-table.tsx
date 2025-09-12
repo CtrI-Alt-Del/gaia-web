@@ -1,11 +1,12 @@
 import {
-  Thermometer,
+  ThermometerSun,
   Droplets,
   CloudRain,
-  TrendingUp,
-  ArrowDown,
-  AlertTriangle,
+  Wind,
+  Gauge,
+  Sun,
   Circle,
+  AlertTriangle,
   Eye,
   Edit,
   Trash2,
@@ -13,21 +14,53 @@ import {
 } from 'lucide-react'
 import type { AlarmRule, AlarmStats } from '../pages/use-alarms'
 import { Button } from '@/ui/shadcn/components/button'
+import { StatusPill } from '@/ui/shadcn/components/status-pill'
 import { Modal, type ModalRef } from '@/ui/global/widgets/components/modal'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { CreateAlarmForm } from './create-alarm-form'
+import { EditAlarmForm } from './edit-alarm-form'
+import { DeleteAlarmDialog } from './delete-alarm-dialog'
 
 const getIcon = (iconName: string) => {
   const iconMap = {
-    thermometer: Thermometer,
+    thermometer: ThermometerSun,
     droplets: Droplets,
     'cloud-rain': CloudRain,
-    'trending-up': TrendingUp,
-    'arrow-down': ArrowDown,
+    wind: Wind,
+    gauge: Gauge,
+    sun: Sun,
   }
 
-  const IconComponent = iconMap[iconName as keyof typeof iconMap] || Thermometer
+  const IconComponent = iconMap[iconName as keyof typeof iconMap] || ThermometerSun
   return <IconComponent className='w-4 h-4' />
+}
+
+const getIconColor = (iconName: string) => {
+  const colorMap = {
+    thermometer: 'text-orange-500',
+    droplets: 'text-sky-500',
+    'cloud-rain': 'text-blue-500',
+    wind: 'text-teal-500',
+    gauge: 'text-violet-500',
+    sun: 'text-yellow-500',
+  }
+
+  return colorMap[iconName as keyof typeof colorMap] || 'text-orange-500'
+}
+
+const getIconBgColor = (iconName: string) => {
+  const bgColorMap = {
+    thermometer: 'bg-orange-100 ring-orange-200',
+    droplets: 'bg-sky-100 ring-sky-200',
+    'cloud-rain': 'bg-blue-100 ring-blue-200',
+    wind: 'bg-teal-100 ring-teal-200',
+    gauge: 'bg-violet-100 ring-violet-200',
+    sun: 'bg-yellow-100 ring-yellow-200',
+  }
+
+  return (
+    bgColorMap[iconName as keyof typeof bgColorMap] || 'bg-orange-100 ring-orange-200'
+  )
 }
 
 const getSeverityIcon = (severity: string) => {
@@ -39,23 +72,16 @@ const getSeverityIcon = (severity: string) => {
 
 const getSeverityColor = (severity: string) => {
   if (severity === 'critical') {
-    return 'bg-red-100 text-red-800 border-red-200'
+    return 'bg-red-100 text-red-800 ring-red-200'
   }
-  return 'bg-yellow-100 text-yellow-800 border-yellow-200'
-}
-
-const getStatusColor = (status: string) => {
-  if (status === 'active') {
-    return 'bg-green-100 text-green-800 border-green-200'
-  }
-  return 'bg-gray-100 text-gray-800 border-gray-200'
+  return 'bg-yellow-100 text-yellow-800 ring-yellow-200'
 }
 
 interface AlarmRowProps {
   alarm: AlarmRule
   onView: (alarmId: string) => void
-  onEdit: (alarmId: string) => void
-  onDelete: (alarmId: string) => void
+  onEdit: (alarm: AlarmRule) => void
+  onDelete: (alarm: AlarmRule) => void
 }
 
 const AlarmRow = ({ alarm, onView, onEdit, onDelete }: AlarmRowProps) => {
@@ -63,8 +89,10 @@ const AlarmRow = ({ alarm, onView, onEdit, onDelete }: AlarmRowProps) => {
     <tr key={alarm.id} className='border-t border-stone-200 hover:bg-gray-50'>
       <td className='px-4 py-3'>
         <div className='flex items-center gap-3'>
-          <div className='flex-shrink-0 w-8 h-8 bg-gray-100 rounded flex items-center justify-center'>
-            {getIcon(alarm.icon)}
+          <div
+            className={`flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center ring-1 ${getIconBgColor(alarm.icon)}`}
+          >
+            <div className={getIconColor(alarm.icon)}>{getIcon(alarm.icon)}</div>
           </div>
           <div className='text-sm font-medium text-gray-900'>{alarm.name}</div>
         </div>
@@ -86,7 +114,7 @@ const AlarmRow = ({ alarm, onView, onEdit, onDelete }: AlarmRowProps) => {
 
       <td className='px-4 py-3'>
         <span
-          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getSeverityColor(alarm.severity)}`}
+          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ring-1 ${getSeverityColor(alarm.severity)}`}
         >
           {getSeverityIcon(alarm.severity)}
           <span className='ml-1'>
@@ -103,12 +131,11 @@ const AlarmRow = ({ alarm, onView, onEdit, onDelete }: AlarmRowProps) => {
       </td>
 
       <td className='px-4 py-3 text-center'>
-        <span
-          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(alarm.status)}`}
-        >
-          <Circle className='w-2 h-2 mr-1' />
-          {alarm.status === 'active' ? 'Ativo' : 'Inativo'}
-        </span>
+        <StatusPill
+          active={alarm.status === 'active'}
+          activeText='Ativo'
+          inactiveText='Inativo'
+        />
       </td>
 
       <td className='px-4 py-3 text-center'>
@@ -122,7 +149,7 @@ const AlarmRow = ({ alarm, onView, onEdit, onDelete }: AlarmRowProps) => {
           </button>
           <button
             type='button'
-            onClick={() => onEdit(alarm.id)}
+            onClick={() => onEdit(alarm)}
             className='bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-900 rounded p-1 transition-colors cursor-pointer'
           >
             <Edit className='w-4 h-4' />
@@ -130,7 +157,7 @@ const AlarmRow = ({ alarm, onView, onEdit, onDelete }: AlarmRowProps) => {
           {alarm.status === 'active' && (
             <button
               type='button'
-              onClick={() => onDelete(alarm.id)}
+              onClick={() => onDelete(alarm)}
               className='bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-900 rounded p-1 transition-colors cursor-pointer'
             >
               <Trash2 className='w-4 h-4' />
@@ -146,7 +173,7 @@ interface AlarmsTableProps {
   alarms: AlarmRule[]
   stats: AlarmStats
   onViewAlarm: (alarmId: string) => void
-  onEditAlarm: (alarmId: string) => void
+  onEditAlarm: (alarmId: string, data: Partial<AlarmRule>) => void
   onDeleteAlarm: (alarmId: string) => void
 }
 
@@ -158,9 +185,38 @@ export const AlarmsTable = ({
   onDeleteAlarm,
 }: AlarmsTableProps) => {
   const modalRef = useRef<ModalRef>(null)
+  const editModalRef = useRef<ModalRef>(null)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [selectedAlarm, setSelectedAlarm] = useState<AlarmRule | null>(null)
 
   const handleCreateAlarm = () => {
     modalRef.current?.open()
+  }
+
+  const handleEditAlarm = (alarm: AlarmRule) => {
+    setSelectedAlarm(alarm)
+    editModalRef.current?.open()
+  }
+
+  const handleDeleteAlarm = (alarm: AlarmRule) => {
+    setSelectedAlarm(alarm)
+    setDeleteDialogOpen(true)
+  }
+
+  const handleSaveEdit = (data: Partial<AlarmRule>) => {
+    if (selectedAlarm) {
+      onEditAlarm(selectedAlarm.id, data)
+      editModalRef.current?.close()
+      setSelectedAlarm(null)
+    }
+  }
+
+  const handleConfirmDelete = () => {
+    if (selectedAlarm) {
+      onDeleteAlarm(selectedAlarm.id)
+      setDeleteDialogOpen(false)
+      setSelectedAlarm(null)
+    }
   }
 
   return (
@@ -181,15 +237,11 @@ export const AlarmsTable = ({
           <span>Total: {stats.total}</span>
           <span>Ativos: {stats.active}</span>
           <span>Críticos: {stats.critical}</span>
-          {Object.entries(stats.bySeverity).map(([severity, count]) => (
-            <span key={severity}>
-              {severity === 'critical' ? 'Críticos' : 'Alarmes'}: {count}
-            </span>
-          ))}
+          <span>Alarmes: {stats.bySeverity.alarm || 0}</span>
         </div>
       </div>
 
-      <div className='overflow-x-auto rounded-lg border border-stone-200'>
+      <div className='overflow-x-auto border-stone-200'>
         <table className='min-w-full text-left text-sm'>
           <thead className='bg-stone-50 text-stone-700'>
             <tr>
@@ -221,8 +273,8 @@ export const AlarmsTable = ({
                 key={alarm.id}
                 alarm={alarm}
                 onView={onViewAlarm}
-                onEdit={onEditAlarm}
-                onDelete={onDeleteAlarm}
+                onEdit={handleEditAlarm}
+                onDelete={handleDeleteAlarm}
               />
             ))}
 
@@ -247,6 +299,34 @@ export const AlarmsTable = ({
       >
         {(close) => <CreateAlarmForm onClose={close} />}
       </Modal>
+
+      {/* Modal de Edição */}
+      <Modal
+        ref={editModalRef}
+        title='Editar Alarme'
+        size='lg'
+        hideScrollbar={true}
+        onOpen={() => console.log('Modal de edição aberto')}
+        onClose={() => console.log('Modal de edição fechado')}
+      >
+        {(close) =>
+          selectedAlarm && (
+            <EditAlarmForm
+              alarm={selectedAlarm}
+              onClose={close}
+              onSave={handleSaveEdit}
+            />
+          )
+        }
+      </Modal>
+
+      {/* Dialog de Confirmação de Exclusão */}
+      <DeleteAlarmDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        alarm={selectedAlarm}
+        onConfirm={handleConfirmDelete}
+      />
     </div>
   )
 }

@@ -244,7 +244,7 @@ export const useAlarms = () => {
 
   return {
     allAlarms,
-    stats: calculateStats(allAlarms),
+    calculateStats,
 
     filterAlarms,
 

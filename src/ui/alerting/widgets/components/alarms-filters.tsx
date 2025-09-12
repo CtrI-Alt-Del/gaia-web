@@ -52,7 +52,7 @@ export const AlarmsFilters = ({
               id='limit'
               name='limit'
               defaultValue={String(limit ?? 10)}
-              className='h-9 rounded-md border border-stone-300 px-2 text-sm outline-none focus:ring-2 focus:ring-blue-500'
+              className='h-9 rounded-md border border-stone-300 px-2 text-sm outline-none focus:ring-2 focus:ring-gray-500'
             >
               {[5, 10, 20, 50].map((v) => (
                 <option key={v} value={v}>
