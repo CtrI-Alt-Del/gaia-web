@@ -3,7 +3,7 @@ export const ROUTES = {
     dashboard: "/dashboard",
     stations: "/stations",
     parameters: "/parameters",
-    alerts: "/alerts",
+    alerts: "/alarms",
     reports: "/reports",
     configuration: "/configuration",
     profile: "/profile",
