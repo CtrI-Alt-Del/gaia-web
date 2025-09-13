@@ -242,17 +242,40 @@ export const useAlarms = () => {
     return true
   }
 
+  const handleViewAlarm = (alarmId: string) => {
+    console.log('Visualizar alarme:', alarmId)
+    // Aqui você implementaria a lógica de navegação para visualizar o alarme
+  }
+
+  const handleEditAlarm = (alarmId: string) => {
+    console.log('Editar alarme:', alarmId)
+    // Aqui você implementaria a lógica de abertura do modal de edição
+  }
+
+  const handleSaveEditAlarm = (alarmId: string, data: Partial<AlarmRule>) => {
+    console.log('Salvar edição do alarme:', alarmId, data)
+    updateAlarm(alarmId, data)
+    // Aqui você implementaria a lógica de atualização do alarme
+  }
+
+  const handleDeleteAlarm = (alarmId: string) => {
+    console.log('Deletar alarme:', alarmId)
+    deleteAlarm(alarmId)
+    // Aqui você implementaria a lógica de exclusão do alarme
+  }
+
   return {
     allAlarms,
     calculateStats,
-
     filterAlarms,
-
     getPaginatedAlarms,
-
     getAlarmById,
     createAlarm,
     updateAlarm,
     deleteAlarm,
+    handleViewAlarm,
+    handleEditAlarm,
+    handleSaveEditAlarm,
+    handleDeleteAlarm,
   }
 }

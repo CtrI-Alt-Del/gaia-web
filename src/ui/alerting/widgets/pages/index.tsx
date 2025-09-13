@@ -4,7 +4,15 @@ import { AlarmsPageView } from './alarms-page-view'
 import { useAlarms } from './use-alarms'
 
 export const AlarmsPage = () => {
-  const { allAlarms, calculateStats, filterAlarms, getPaginatedAlarms } = useAlarms()
+  const {
+    allAlarms,
+    calculateStats,
+    filterAlarms,
+    getPaginatedAlarms,
+    handleViewAlarm,
+    handleEditAlarm,
+    handleDeleteAlarm,
+  } = useAlarms()
   const [searchParams] = useSearchParams()
   const [error, setError] = useState<string | null>(null)
 
@@ -29,19 +37,6 @@ export const AlarmsPage = () => {
     cursor,
     nextCursor,
     prevCursor,
-  }
-
-  const handleViewAlarm = (alarmId: string) => {
-    console.log('Visualizar alarme:', alarmId)
-  }
-
-  const handleEditAlarm = (alarmId: string, data: Partial<AlarmRule>) => {
-    console.log('Editar alarme:', alarmId, data)
-    // Aqui você implementaria a lógica de atualização do alarme
-  }
-
-  const handleDeleteAlarm = (alarmId: string) => {
-    console.log('Deletar alarme:', alarmId)
   }
 
   const handleClearError = () => {
