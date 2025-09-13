@@ -24,12 +24,8 @@ const createAlarmSchema = z.object({
   name: z.string().min(3, { message: 'Inclua no mínimo 3 caracteres' }),
   icon: z.string().min(1, { message: 'Selecione um ícone' }),
   condition: z.string().min(1, { message: 'Digite a condição do alarme' }),
-  conditionLabel: z.string().optional(),
   message: z.string().min(1, { message: 'Digite a mensagem do alarme' }),
-  messageLabel: z.string().optional(),
   severity: z.enum(['alarm', 'critical', 'warning']),
-  target: z.string().min(1, { message: 'Digite o alvo do alarme' }),
-  targetLabel: z.string().optional(),
   status: z.enum(['active', 'inactive']),
 })
 
@@ -46,12 +42,8 @@ export function CreateAlarmForm({ onClose }: CreateAlarmFormProps) {
       name: '',
       icon: '',
       condition: '',
-      conditionLabel: '',
       message: '',
-      messageLabel: '',
       severity: 'alarm',
-      target: '',
-      targetLabel: '',
       status: 'active',
     },
   })
@@ -110,69 +102,37 @@ export function CreateAlarmForm({ onClose }: CreateAlarmFormProps) {
           />
         </div>
 
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-          <FormField
-            control={createAlarmForm.control}
-            name='condition'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Condição</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder='Ex: Temperatura > 35°C' />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <FormField
+          control={createAlarmForm.control}
+          name='condition'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Condição</FormLabel>
+              <FormControl>
+                <Input {...field} placeholder='Ex: Temperatura > 35°C' />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-          <FormField
-            control={createAlarmForm.control}
-            name='conditionLabel'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Rótulo da Condição (opcional)</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder='Ex: Condição de temperatura' />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <div className='space-y-2'>
-          <FormField
-            control={createAlarmForm.control}
-            name='message'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Mensagem</FormLabel>
-                <FormControl>
-                  <Textarea
-                    {...field}
-                    placeholder='Ex: Temperatura acima do nível crítico'
-                    rows={3}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={createAlarmForm.control}
-            name='messageLabel'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Rótulo da Mensagem (opcional)</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder='Ex: Descrição da mensagem' />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+        <FormField
+          control={createAlarmForm.control}
+          name='message'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Mensagem</FormLabel>
+              <FormControl>
+                <Textarea
+                  {...field}
+                  placeholder='Ex: Temperatura acima do nível crítico'
+                  rows={3}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
           <FormField
@@ -221,35 +181,6 @@ export function CreateAlarmForm({ onClose }: CreateAlarmFormProps) {
           />
         </div>
 
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-          <FormField
-            control={createAlarmForm.control}
-            name='target'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Alvo</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder='Ex: Todas as Estações' />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={createAlarmForm.control}
-            name='targetLabel'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Rótulo do Alvo (opcional)</FormLabel>
-                <FormControl>
-                  <Input {...field} placeholder='Ex: Descrição do alvo' />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
 
         <div className='flex justify-end space-x-3 pt-4 border-t border-gray-200'>
           <Button type='button' variant='outline' onClick={onClose} className='px-6 py-2'>

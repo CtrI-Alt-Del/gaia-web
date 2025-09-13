@@ -21,61 +21,87 @@ import { CreateAlarmForm } from './create-alarm-form'
 import { EditAlarmForm } from './edit-alarm-form'
 import { DeleteAlarmDialog } from './delete-alarm-dialog'
 
-const getIcon = (iconName: string) => {
-  const iconMap = {
-    thermometer: ThermometerSun,
-    droplets: Droplets,
-    'cloud-rain': CloudRain,
-    wind: Wind,
-    gauge: Gauge,
-    sun: Sun,
-  }
+const ICON_MAP = {
+  thermometer: ThermometerSun,
+  droplets: Droplets,
+  'cloud-rain': CloudRain,
+  wind: Wind,
+  gauge: Gauge,
+  sun: Sun,
+}
 
-  const IconComponent = iconMap[iconName as keyof typeof iconMap] || ThermometerSun
+const ICON_COLOR_MAP = {
+  thermometer: 'text-orange-500',
+  droplets: 'text-sky-500',
+  'cloud-rain': 'text-blue-500',
+  wind: 'text-teal-500',
+  gauge: 'text-violet-500',
+  sun: 'text-yellow-500',
+}
+
+const ICON_BG_COLOR_MAP = {
+  thermometer: 'bg-orange-100 ring-orange-200',
+  droplets: 'bg-sky-100 ring-sky-200',
+  'cloud-rain': 'bg-blue-100 ring-blue-200',
+  wind: 'bg-teal-100 ring-teal-200',
+  gauge: 'bg-violet-100 ring-violet-200',
+  sun: 'bg-yellow-100 ring-yellow-200',
+}
+
+const SEVERITY_ICON_MAP = {
+  critical: <AlertTriangle className='w-3 h-3' />,
+  alarm: <Circle className='w-3 h-3' />,
+  warning: <Circle className='w-3 h-3' />,
+}
+
+const SEVERITY_COLOR_MAP = {
+  critical: 'bg-red-100 text-red-800 ring-red-200',
+  alarm: 'bg-yellow-100 text-yellow-800 ring-yellow-200',
+  warning: 'bg-yellow-100 text-yellow-800 ring-yellow-200',
+}
+
+const getIcon = (iconName: string) => {
+  const IconComponent = ICON_MAP[iconName as keyof typeof ICON_MAP] || ThermometerSun
   return <IconComponent className='w-4 h-4' />
 }
 
 const getIconColor = (iconName: string) => {
-  const colorMap = {
-    thermometer: 'text-orange-500',
-    droplets: 'text-sky-500',
-    'cloud-rain': 'text-blue-500',
-    wind: 'text-teal-500',
-    gauge: 'text-violet-500',
-    sun: 'text-yellow-500',
-  }
-
-  return colorMap[iconName as keyof typeof colorMap] || 'text-orange-500'
+  return ICON_COLOR_MAP[iconName as keyof typeof ICON_COLOR_MAP] || 'text-orange-500'
 }
 
 const getIconBgColor = (iconName: string) => {
-  const bgColorMap = {
-    thermometer: 'bg-orange-100 ring-orange-200',
-    droplets: 'bg-sky-100 ring-sky-200',
-    'cloud-rain': 'bg-blue-100 ring-blue-200',
-    wind: 'bg-teal-100 ring-teal-200',
-    gauge: 'bg-violet-100 ring-violet-200',
-    sun: 'bg-yellow-100 ring-yellow-200',
-  }
-
   return (
-    bgColorMap[iconName as keyof typeof bgColorMap] || 'bg-orange-100 ring-orange-200'
+    ICON_BG_COLOR_MAP[iconName as keyof typeof ICON_BG_COLOR_MAP] ||
+    'bg-orange-100 ring-orange-200'
   )
 }
 
 const getSeverityIcon = (severity: string) => {
-  if (severity === 'critical') {
-    return <AlertTriangle className='w-3 h-3' />
-  }
-  return <Circle className='w-3 h-3' />
+  return (
+    SEVERITY_ICON_MAP[severity as keyof typeof SEVERITY_ICON_MAP] || (
+      <Circle className='w-3 h-3' />
+    )
+  )
 }
 
 const getSeverityColor = (severity: string) => {
-  if (severity === 'critical') {
-    return 'bg-red-100 text-red-800 ring-red-200'
-  }
-  return 'bg-yellow-100 text-yellow-800 ring-yellow-200'
+  return (
+    SEVERITY_COLOR_MAP[severity as keyof typeof SEVERITY_COLOR_MAP] ||
+    'bg-yellow-100 text-yellow-800 ring-yellow-200'
+  )
 }
+
+const TABLE_HEADERS = [
+  'NOME',
+  'CONDIÇÃO',
+  'MENSAGEM',
+  'SEVERIDADE',
+  'ALVO',
+  'STATUS',
+  'AÇÕES',
+]
+
+const CENTERED_HEADERS = ['STATUS', 'AÇÕES', 'ALVO']
 
 interface AlarmRowProps {
   alarm: AlarmRule
@@ -245,21 +271,11 @@ export const AlarmsTable = ({
         <table className='min-w-full text-left text-sm'>
           <thead className='bg-stone-50 text-stone-700'>
             <tr>
-              {[
-                'NOME',
-                'CONDIÇÃO',
-                'MENSAGEM',
-                'SEVERIDADE',
-                'ALVO',
-                'STATUS',
-                'AÇÕES',
-              ].map((header) => (
+              {TABLE_HEADERS.map((header) => (
                 <th
                   key={header}
                   className={`px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider ${
-                    header === 'STATUS' || header === 'AÇÕES' || header === 'ALVO'
-                      ? 'text-center'
-                      : 'text-left'
+                    CENTERED_HEADERS.includes(header as any) ? 'text-center' : 'text-left'
                   }`}
                 >
                   {header}
